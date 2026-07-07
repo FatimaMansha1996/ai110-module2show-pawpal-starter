@@ -44,15 +44,26 @@ pip install -r requirements.txt
 
 ## 🖥️ Sample Output
 
-Paste a sample of your app's CLI or Streamlit output here so a reader can see what a generated plan looks like:
+Terminal output from running `python main.py` (one owner, two pets, four tasks):
 
 ```
-# e.g.:
-# Daily plan for Biscuit (Golden Retriever):
-#   08:00 — Morning walk (30 min) [priority: high]
-#   09:00 — Feeding (10 min) [priority: high]
-#   ...
+========================================
+  Today's Schedule for Jordan
+========================================
+  TIME   TASK             PET       DUR  PRIORITY
+  -----  ---------------  -------  ----  --------
+  08:00  Feeding          Mochi     10m  HIGH
+  08:10  Walk             Mochi     30m  HIGH
+  08:40  Medication       Biscuit    5m  MEDIUM
+  08:45  Enrichment play  Biscuit   20m  LOW
+
+  Total: 65m planned / 120m available
+  Skipped: (none)
 ```
+
+The scheduler orders tasks by priority (high first), assigns each a start time
+in sequence, and would list any tasks that don't fit the time budget under
+"Skipped".
 
 ## 🧪 Testing PawPal+
 

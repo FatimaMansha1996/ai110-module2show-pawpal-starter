@@ -1,10 +1,12 @@
 classDiagram
-    %% PawPal+ initial design. Update this file so it matches your final implementation.
+    %% PawPal+ design. Kept in sync with pawpal_system.py.
 
     class Owner {
         +str name
         +list~Pet~ pets
         +add_pet(pet) None
+        +all_tasks() list~Task~
+        +pending_tasks() list~Task~
     }
 
     class Pet {
@@ -12,21 +14,49 @@ classDiagram
         +str species
         +list~Task~ tasks
         +add_task(task) None
+        +schedule_walk(duration_minutes, priority) Task
+        +pending_tasks() list~Task~
+    }
+
+    class Priority {
+        <<enumeration>>
+        LOW
+        MEDIUM
+        HIGH
+    }
+
+    class Frequency {
+        <<enumeration>>
+        ONCE
+        DAILY
+        WEEKLY
     }
 
     class Task {
         +str title
         +int duration_minutes
-        +str priority
+        +Priority priority
+        +Frequency frequency
+        +bool completed
         +str start_time
+        +str pet_name
+        +mark_complete() None
     }
 
     class Scheduler {
         +int available_minutes
+        +str day_start
+        +list~Task~ plan
+        +list~Task~ skipped
         +build_plan(tasks) list~Task~
+        +plan_for_owner(owner) list~Task~
+        +see_todays_tasks(pet) list~Task~
         +explain() str
     }
 
     Owner "1" --> "*" Pet : owns
     Pet "1" --> "*" Task : has
+    Task --> Priority : uses
+    Task --> Frequency : uses
+    Scheduler --> Owner : reads tasks from
     Scheduler --> Task : orders

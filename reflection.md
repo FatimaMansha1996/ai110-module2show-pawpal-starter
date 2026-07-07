@@ -2,6 +2,14 @@
 
 ## 1. System Design
 
+**Core user actions**
+
+PawPal+ is built around three core actions a user should be able to perform:
+
+1. **Add a pet** — The user enters a new pet's basic info (name and species) and registers it with their profile, so the app knows which animal the care tasks belong to.
+2. **Schedule a walk** — The user creates a care task (such as a walk) for a pet, specifying how long it takes and how important it is, and adds it to that pet's list of tasks to be planned.
+3. **See today's tasks** — The user generates and views a daily plan: the app orders the pet's tasks by priority, fits them into the available time, and shows what happens when (and why).
+
 **a. Initial design**
 
 - Briefly describe your initial UML design.
@@ -28,8 +36,22 @@ I separated Task from Scheduler on purpose: a Task is just data about one activi
 
 **b. Design changes**
 
-- Did your design change during implementation?
-- If yes, describe at least one change and why you made it.
+Yes. After asking my AI coding assistant to review the `pawpal_system.py` skeleton
+for missing relationships and logic bottlenecks, I made one change based on its
+feedback:
+
+- **Changed `Task.priority` from a free-form string to a `Priority` enum.**
+  Originally `priority` was a plain `str` (`"low"`/`"medium"`/`"high"`). The review
+  pointed out this gives no defined sort order and no protection against typos,
+  which would be a bottleneck for the scheduler since `build_plan()` needs to sort
+  tasks by importance. I introduced a `Priority(IntEnum)` with `LOW = 1`,
+  `MEDIUM = 2`, `HIGH = 3` so higher value means more important and tasks sort
+  cleanly, and updated the UML (added the `Priority` enumeration and a
+  `Task --> Priority` relationship) to match.
+
+The review also flagged other potential improvements (linking a `Task` back to its
+`Pet`, storing the plan so `explain()` has something to describe, and using numeric
+start times), which I noted for future iterations but did not implement yet.
 
 ---
 
