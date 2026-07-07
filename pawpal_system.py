@@ -46,6 +46,7 @@ class Task:
         self.completed = True
 
     def __str__(self) -> str:
+        """Return a readable one-line summary of the task."""
         who = f" — {self.pet_name}" if self.pet_name else ""
         when = f"{self.start_time} " if self.start_time else ""
         done = " ✓" if self.completed else ""
@@ -110,6 +111,7 @@ class Scheduler:
     """Builds and explains a daily care plan from a set of tasks."""
 
     def __init__(self, available_minutes: int = 240, day_start: str = "08:00") -> None:
+        """Set the daily time budget and the clock time the plan starts from."""
         self.available_minutes = available_minutes
         self.day_start = day_start
         self.plan: list[Task] = []  # last plan built, so explain() has something to describe
@@ -214,9 +216,11 @@ class Scheduler:
 
     @staticmethod
     def _to_minutes(hhmm: str) -> int:
+        """Convert an "HH:MM" string into minutes since midnight."""
         hours, minutes = hhmm.split(":")
         return int(hours) * 60 + int(minutes)
 
     @staticmethod
     def _to_hhmm(total_minutes: int) -> str:
+        """Convert minutes since midnight back into an "HH:MM" string."""
         return f"{total_minutes // 60:02d}:{total_minutes % 60:02d}"
